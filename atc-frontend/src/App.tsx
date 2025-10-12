@@ -53,7 +53,7 @@ function App() {
           taxiwayOutTime: new Date(flight.taxiwayOutTime).toLocaleTimeString(),
           clearanceTime: new Date(flight.takeoffClearedTime).toLocaleTimeString(),
           takeoffTime: new Date(flight.departureTime).toLocaleTimeString(),
-          totalTurnaroundTime: `${turnaroundMinutes} mins`,
+          totalTurnaroundTime: `${flight.totalTurnaroundTime}`,
         };
       });
       

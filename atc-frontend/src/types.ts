@@ -36,6 +36,7 @@ export interface BackendFlightRecord {
   takeoffClearedTime: string;
   takeoffRollTime: string;
   departureTime: string;
+  totalTurnaroundTime: string
 }
 
 export interface BackendSummary {

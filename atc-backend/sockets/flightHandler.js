@@ -15,6 +15,9 @@ async function handleFlight(flight, socket,flightDB) {
   const taxiwayout=await handleTaxiwayOut(flight,socket);
   const departure=await handleTakeoff(flight,socket);
 
+  const touchdownTime = new Date(landingInfo.touchdown);
+  const departureTime = new Date(departure.departureTime);
+  const totalTurnaroundTime = ((departureTime - touchdownTime) / 1000).toFixed(2).toString();
   const flightRecord = {
     flightId: flight.flightId,
     airline: flight.airline,
@@ -24,7 +27,8 @@ async function handleFlight(flight, socket,flightDB) {
     ...taxiwayIn,
     ...gateInfo,
     ...taxiwayout,
-    ...departure
+    ...departure,
+    totalTurnaroundTime
   };
 
   flightDB.push(flightRecord);

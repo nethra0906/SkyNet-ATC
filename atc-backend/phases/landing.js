@@ -21,12 +21,12 @@ async function handleLanding(flight, socket) {
     });
     
     await sleep(approachTime);
-    
+    const touchdownTime = new Date();
     socket.emit("Touchdown",{
       flightId: flight.flightId,
       runway:"RW-1",
       status:"Touchdown Complete",
-      timestamp:new Date().toISOString()
+      timestamp:touchdownTime.toISOString()
     });
   
     await sleep(landingTime);
@@ -35,7 +35,7 @@ async function handleLanding(flight, socket) {
     await sleep(500);
     return {
     landingStart: new Date(currentTime).toISOString(),
-    touchdown: new Date(Date.now() - landingTime).toISOString(),
+    touchdown: touchdownTime.toISOString(),
     runway: "RW-1"
   };
 }

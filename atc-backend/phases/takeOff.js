@@ -17,7 +17,7 @@ async function handleTakeoff(flight, socket) {
 
   socket.emit("clearedForTakeoff", {
     flightId: flight.flightId,
-    runway: "RW-1",
+    runway: "RW-2",
     status: "Cleared for Takeoff",
     timestamp: clearedTime.toISOString(),
   });
@@ -25,7 +25,7 @@ async function handleTakeoff(flight, socket) {
   const rollTime = new Date();
   socket.emit("takeoffroll", {
     flightId: flight.flightId,
-    runway: "RW-1",
+    runway: "RW-2",
     status: "Cleared for Takeoff",
     timestamp: rollTime.toISOString(),
   });
@@ -34,7 +34,7 @@ async function handleTakeoff(flight, socket) {
   const departureTime = new Date();
   socket.emit("flightDeparted", {
     flightId: flight.flightId,
-    runway: "RW-1",
+    runway: "RW-2",
     status: "Airborne",
     timestamp: departureTime.toISOString(),
   });
