@@ -1,9 +1,9 @@
 const fs = require("fs");
 const path = require("path");
-const { handleLanding } = require("../phases/landing");
-const { handlegate } = require("../phases/gatedock");
-const { handleTaxiwayIn, handleTaxiwayOut } = require("../phases/taxiway");
-const { handleTakeoff } = require("../phases/takeOff");
+const { handleLanding } = require("../phases/landing.js");
+const { handlegate } = require("../phases/gateDock.js");
+const { handleTaxiwayIn, handleTaxiwayOut } = require("../phases/taxiway.js");
+const { handleTakeoff } = require("../phases/takeOff.js");
 
 async function handleFlight(flight, socket,flightDB) {
   const landingInfo =await handleLanding(flight, socket);
