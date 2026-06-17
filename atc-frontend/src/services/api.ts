@@ -1,7 +1,9 @@
 import axios from "axios";
 import type { Flight } from "../types";
 
-const API = axios.create({ baseURL: "http://localhost:5000/api" });
+const API = axios.create({
+  baseURL: `${import.meta.env.VITE_API_URL}/api`,
+});
 
 export const getFlights = () => API.get<Flight[]>("/flights");
 export const addFlight = (data: Flight) => API.post("/flights", data);
