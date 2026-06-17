@@ -1,26 +1,236 @@
+/* ─── NAV SHELL ──────────────────────────────────────────── */
+
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 50;
-  background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 70%, #111 30%));
-  color: #fff;
-  padding: 12px 0;
-  box-shadow: var(--shadow);
-  border-bottom: 1px solid color-mix(in srgb, #fff 12%, transparent);
-  backdrop-filter: saturate(150%) blur(6px);
+  z-index: 100;
+  background: rgba(5, 12, 28, 0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+  padding: 0;
+  overflow: hidden;
 }
+
+/* ─── RUNWAY GRID (decorative) ───────────────────────────── */
+
+.runwayGrid {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  pointer-events: none;
+  opacity: 0.022;
+}
+
+.runwayLine {
+  width: 100%;
+  height: 1px;
+  background: #38bdf8;
+}
+
+/* ─── CONTAINER ──────────────────────────────────────────── */
 
 .container {
-  max-width: 1200px;
+  position: relative;
+  max-width: 1280px;
   margin: 0 auto;
+  padding: 0 32px;
+  height: 58px;
   display: flex;
   align-items: center;
-  min-height: 56px;
+  justify-content: space-between;
+  gap: 24px;
 }
 
+/* ─── BRAND ──────────────────────────────────────────────── */
+
 .brand {
-  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+/* Logo mark: concentric ring + center dot */
+
+.logoMark {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.logoRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(56, 189, 248, 0.45);
+  animation: radarSpin 6s linear infinite;
+}
+
+.logoDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow:
+    0 0 8px rgba(56, 189, 248, 0.8),
+    0 0 18px rgba(56, 189, 248, 0.3);
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.brandName {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #f1f5f9;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.brandSub {
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #1e3a5f;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* ─── RIGHT CLUSTER ──────────────────────────────────────── */
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ─── LIVE STATS ─────────────────────────────────────────── */
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+}
+
+.statNum {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #38bdf8;
+  line-height: 1;
+  font-family: 'Courier New', monospace;
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  font-size: 0.52rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #1e3a5f;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+}
+
+/* ─── VERTICAL DIVIDER ───────────────────────────────────── */
+
+.divider {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(56, 189, 248, 0.15),
+    transparent
+  );
+  flex-shrink: 0;
+}
+
+/* ─── SYSTEM STATUS ──────────────────────────────────────── */
+
+.systemStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  background: rgba(56, 189, 248, 0.05);
+}
+
+.statusDot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #38bdf8;
+  flex-shrink: 0;
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+.statusText {
+  font-size: 0.58rem;
   font-weight: 700;
-  letter-spacing: 0.2px;
-  margin-left: -100px; 
+  letter-spacing: 0.16em;
+  color: #38bdf8;
+  font-family: 'Courier New', monospace;
+}
+
+/* ─── KEYFRAMES ──────────────────────────────────────────── */
+
+@keyframes radarSpin {
+  0%   { transform: rotate(0deg) scaleX(1); opacity: 0.45; }
+  25%  { transform: rotate(90deg) scaleX(0.7); opacity: 0.2; }
+  50%  { transform: rotate(180deg) scaleX(1); opacity: 0.45; }
+  75%  { transform: rotate(270deg) scaleX(0.7); opacity: 0.2; }
+  100% { transform: rotate(360deg) scaleX(1); opacity: 0.45; }
+}
+
+@keyframes statusPulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.85); }
+  50%       { opacity: 1;   transform: scale(1.2);  }
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+    height: 52px;
+  }
+
+  /* Hide stats on mobile, keep brand + status */
+  .stat,
+  .divider {
+    display: none;
+  }
+
+  .brandSub {
+    display: none;
+  }
+
+  .right {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .statusText {
+    display: none;
+  }
+
+  .systemStatus {
+    padding: 5px 8px;
+  }
 }

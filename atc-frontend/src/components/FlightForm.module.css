@@ -1,176 +1,338 @@
+/* ─── FORM PANEL ─────────────────────────────────────────── */
 
 .form {
-  display: grid;
-  gap: 14px 16px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-  background: var(--card-bg);
-  padding: 16px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  border: 1px solid #eef2f7;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(8, 18, 38, 0.92) 0%,
+    rgba(10, 22, 48, 0.88) 100%
+  );
+  border: 1px solid rgba(56, 189, 248, 0.1);
+  border-radius: 6px;
+  padding: 28px 32px 26px;
+  margin-bottom: 24px;
+  box-shadow:
+    0 1px 0 rgba(56, 189, 248, 0.06) inset,
+    0 24px 48px rgba(0, 0, 0, 0.45);
 }
 
-@media (max-width: 640px) {
-  .form {
-    grid-template-columns: 1fr;
-  }
+/* ─── AMBIENT GLOW ───────────────────────────────────────── */
+
+.glowOrb {
+  position: absolute;
+  top: -100px;
+  right: -80px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle,
+    rgba(56, 189, 248, 0.06) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
 }
+
+/* ─── HEADER ─────────────────────────────────────────────── */
+
+.formHeader {
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #38bdf8;
+  margin-bottom: 6px;
+  font-family: 'Courier New', monospace;
+}
+
+.formTitle {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #f1f5f9;
+  letter-spacing: -0.025em;
+}
+
+/* ─── FIELDS GRID ────────────────────────────────────────── */
+
+.fieldsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 20px;
+  margin-bottom: 22px;
+}
+
+/* ─── FIELD ──────────────────────────────────────────────── */
 
 .field {
-  display: grid;
-  gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 }
 
-label {
-  font-size: 12px;
+/* ─── LABEL ──────────────────────────────────────────────── */
+
+.fieldLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.6rem;
   font-weight: 700;
-  color: #374151;
+  letter-spacing: 0.18em;
+  color: #334155;
+  font-family: 'Courier New', monospace;
+  cursor: default;
+  transition: color 0.2s;
 }
 
-input,
-select,
-button {
-  font-size: 14px;
+.field:focus-within .fieldLabel {
+  color: #38bdf8;
 }
 
-input,
-select {
-  appearance: none;
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  background: #fff;
-  color: #111827;
-  transition: border-color var(--transition), box-shadow var(--transition), background-color var(--transition);
+.labelDot {
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #1e293b;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.field:focus-within .labelDot {
+  background: #38bdf8;
+}
+
+/* ─── INPUT / SELECT ─────────────────────────────────────── */
+
+.field input,
+.field select {
+  height: 44px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(6, 12, 26, 0.7);
+  color: #e2e8f0;
+  padding: 0 14px;
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
+  font-weight: 500;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
   width: 100%;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-input::placeholder {
-  color: #9ca3af;
+.field input::placeholder {
+  color: #1e3a5f;
+  font-style: normal;
 }
 
-input:focus,
-select:focus {
+.field input:focus,
+.field select:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  border-color: rgba(56, 189, 248, 0.45);
+  background: rgba(56, 189, 248, 0.04);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.07);
 }
 
-input[aria-invalid="true"],
-select[aria-invalid="true"] {
-  border-color: #dc2626;
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+/* Error state */
+
+.fieldError .field input,
+.fieldError input {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.03);
 }
 
-input[type="datetime-local"] {
-  font-variant-numeric: tabular-nums;
+.fieldError input:focus {
+  border-color: rgba(239, 68, 68, 0.6);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.07);
 }
+
+/* ─── DATETIME PICKER ────────────────────────────────────── */
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.3) sepia(1) saturate(2) hue-rotate(180deg);
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+input[type="datetime-local"]:hover::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+
+/* ─── SELECT WRAP ────────────────────────────────────────── */
+
+.selectWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.selectWrap select {
+  padding-right: 34px;
+  cursor: pointer;
+}
+
+.selectArrow {
+  position: absolute;
+  right: 12px;
+  font-size: 0.75rem;
+  color: #334155;
+  pointer-events: none;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+.field:focus-within .selectArrow {
+  color: #38bdf8;
+}
+
+.field select option {
+  background: #0a1628;
+  color: #e2e8f0;
+}
+
+/* ─── ERROR MESSAGE ──────────────────────────────────────── */
 
 .error {
-  margin: 2px 0 0;
-  font-size: 12px;
-  color: #b91c1c;
+  margin: 0;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #f87171;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.05em;
 }
+
+/* ─── ACTIONS ────────────────────────────────────────────── */
 
 .actions {
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  gap: 10px;
-  grid-column: 1 / -1;
 }
 
+/* ─── SUBMIT BUTTON ──────────────────────────────────────── */
 
-button {
-  background: var(--primary);
-  color: #fff;
-  padding: 10px 14px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
-  font-weight: 700;
-  display: flex;
+.actions button {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  padding: 0 28px;
+  height: 42px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-family: 'Courier New', monospace;
+  color: #ffffff;
+  background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
+  box-shadow:
+    0 0 0 1px rgba(56, 189, 248, 0.15),
+    0 3px 10px rgba(37, 99, 235, 0.18);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.25s ease;
 }
 
-
-button:hover {
-  filter: brightness(0.95);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-  transform: translateY(-1px);
+.actions button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
 }
 
-button:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35);
+.actions button:not(:disabled):hover::after {
+  transform: translateX(100%);
 }
 
+.actions button:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(56, 189, 248, 0.28),
+    0 6px 16px rgba(37, 99, 235, 0.28);
+}
 
-button:disabled {
+.actions button:not(:disabled):active {
+  transform: translateY(0);
+  box-shadow:
+    0 0 0 1px rgba(56, 189, 248, 0.25),
+    0 2px 6px rgba(37, 99, 235, 0.25);
+}
+
+.actions button:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
-  opacity: 0.7;
-  filter: none;
   transform: none;
   box-shadow: none;
 }
 
+/* Success state */
 
-.inlineGroup {
-  display: grid;
-  gap: 12px 16px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.actions button.btnSuccess {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow:
+    0 0 0 1px rgba(16, 185, 129, 0.15),
+    0 3px 10px rgba(5, 150, 105, 0.18);
 }
 
-@media (max-width: 640px) {
-  .inlineGroup {
+/* ─── SPINNER ────────────────────────────────────────────── */
+
+.spinner {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ─── KEYFRAMES ──────────────────────────────────────────── */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .fieldsGrid {
     grid-template-columns: 1fr;
   }
 }
 
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    transition: none !important;
+@media (max-width: 640px) {
+  .form {
+    padding: 22px 20px 20px;
   }
-}
 
-.datetime {
-  position: relative;
-}
+  .actions {
+    justify-content: stretch;
+  }
 
-
-.datetime:required:invalid::-webkit-datetime-edit {
-  color: transparent;           
-}
-.datetime:focus::-webkit-datetime-edit,
-.datetime:valid::-webkit-datetime-edit {
-  color: inherit;                
-}
-
-.datetime:required:invalid::before {
-  content: attr(placeholder);
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ca3af;
-  pointer-events: none;
-  font-size: 14px;
-}
-.datetime:focus::before,
-.datetime:valid::before {
-  content: "";
-}
-
-
-.datetime::-webkit-calendar-picker-indicator {
-  opacity: 1;
-}
-
-
-.datetime {
-  font-variant-numeric: tabular-nums;
+  .actions button {
+    width: 100%;
+  }
 }

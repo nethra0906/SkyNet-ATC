@@ -1,22 +1,73 @@
 :root {
-  --bg: #f9f9f9;
-  --primary: #2e86de;
-  --secondary: #54a0ff;
-  --text: #222;
-  --card-bg: #fff;
-  --radius: 12px;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --transition: 0.3s ease;
+  /* Colors - Modern Dark Theme Palette */
+  --bg: #0f172a;           /* Deep Slate */
+  --card-bg: rgba(30, 41, 59, 0.7); /* Glassmorphism background */
+  --primary: #3b82f6;      /* Vibrant Blue */
+  --secondary: #38bdf8;    /* Sky Blue */
+  --text: #f1f5f9;         /* Off-White */
+  --text-muted: #94a3b8;   /* Slate/Gray */
+  
+  /* Layout & Effects */
+  --radius: 16px;
+  --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", Roboto, sans-serif;
 }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--text);
+  /* Modern font stack for a tech/dashboard feel */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+/* Custom scrollbar globally for a consistent look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Base heading styles */
+h1, h2, h3 {
+  color: #f8fafc;
+  letter-spacing: -0.025em;
+}
+
+/* Utility to ensure glassmorphism works across the app */
+.glass {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+}
+
+.simulation-layout {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* Add this to help space out the components visually */
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }

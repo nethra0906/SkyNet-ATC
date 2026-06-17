@@ -1,123 +1,373 @@
+/* ─── SECTION ───────────────────────────────────────────── */
+
 .dashboard {
-  margin-top: 20px;
+  padding: 0;
 }
+
+/* ─── HEADER ────────────────────────────────────────────── */
 
 .header {
   display: flex;
-  align-items: baseline;
   justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 12px;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.eyebrow {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #38bdf8;
+  margin-bottom: 6px;
+  font-family: 'Courier New', monospace;
 }
 
 .title {
-  margin: 0 0 10px 0;
-  font-size: 18px;
-  font-weight: 750;
-}
-
-.panel {
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 16px;
-  border: 1px solid #eef2f7;
-}
-
-.subtitle {
   margin: 0;
-  color: #6b7280;
-  font-size: 13px;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.025em;
 }
 
-.empty {
-  background-color: eff6ff;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 20px;
-  text-align: center;
+/* Live count badge */
+
+.count {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
 }
 
-.hint {
-  margin: 6px 0 0;
-  color: #6b7280;
-  font-size: 13px;
+.countNum {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #38bdf8;
+  line-height: 1;
+  font-family: 'Courier New', monospace;
 }
+
+.countLabel {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #475569;
+  text-transform: uppercase;
+}
+
+/* ─── GRID ───────────────────────────────────────────────── */
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
 }
 
+/* ─── CARD ───────────────────────────────────────────────── */
+
 .card {
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 16px;
-  transition: transform var(--transition), box-shadow var(--transition);
-  border: 1px solid #eef2f7;
+  position: relative;
+  overflow: hidden;
+  background: rgba(10, 18, 38, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.1);
+  border-radius: 6px;
+  padding: 20px 22px 16px;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
+  border-color: rgba(56, 189, 248, 0.28);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(56, 189, 248, 0.08);
 }
+
+/* Emergency card pulse border */
+
+.cardEmergency {
+  border-color: rgba(239, 68, 68, 0.25);
+  animation: emergencyBorder 2s ease-in-out infinite;
+}
+
+.cardEmergency:hover {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+/* ─── ACCENT LINE (top edge) ─────────────────────────────── */
+
+.accentLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+
+.priority-normalAccent {
+  background: linear-gradient(90deg, #38bdf8 0%, transparent 70%);
+}
+
+.priority-vipAccent {
+  background: linear-gradient(90deg, #fbbf24 0%, transparent 70%);
+}
+
+.priority-emergencyAccent {
+  background: linear-gradient(90deg, #ef4444 0%, transparent 70%);
+  animation: emergencyLineFlash 1.5s ease-in-out infinite;
+}
+
+/* ─── CARD HEAD ──────────────────────────────────────────── */
 
 .cardHead {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cardHeadLeft {
+  min-width: 0;
+}
+
+.flightLabel {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #38bdf8;
+  margin-bottom: 4px;
+  font-family: 'Courier New', monospace;
 }
 
 .flightId {
   margin: 0;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #f1f5f9;
+  letter-spacing: -0.02em;
+  line-height: 1;
 }
 
+/* ─── BADGE ──────────────────────────────────────────────── */
+
+.badge {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  font-family: 'Courier New', monospace;
+  border: 1px solid transparent;
+}
+
+.priority-normal {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.08);
+  border-color: rgba(56, 189, 248, 0.22);
+}
+
+.priority-vip {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.08);
+  border-color: rgba(251, 191, 36, 0.22);
+}
+
+.priority-emergency {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.3);
+  animation: emergencyBadge 1.5s ease-in-out infinite;
+}
+
+/* ─── SEPARATOR ──────────────────────────────────────────── */
+
+.separator {
+  margin: 16px 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    rgba(56, 189, 248, 0.25) 0%,
+    rgba(56, 189, 248, 0.06) 50%,
+    transparent 100%
+  );
+}
+
+/* ─── META ───────────────────────────────────────────────── */
+
 .meta {
-  display: grid;
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  align-items: baseline;
+  gap: 12px;
 }
 
-.label {
-  color: #6b7280;
-  font-size: 12px;
-}
-
-.value {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.badge {
-  font-size: 12px;
+.metaLabel {
+  font-size: 0.6rem;
   font-weight: 700;
-  border-radius: 999px;
-  padding: 4px 10px;
-  line-height: 1;
-  border: 1px solid transparent;
+  letter-spacing: 0.15em;
+  color: #334155;
+  font-family: 'Courier New', monospace;
+  flex-shrink: 0;
 }
 
-/* Priority */
-.priority-normal { background: #eef2ff; color: #3730a3; border-color: #c7d2fe; }
-.priority-vip { background: #fff7ed; color: #9a3412; border-color: #fed7aa; }
-.priority-emergency { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+.metaValue {
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: right;
+  font-family: 'Courier New', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+}
 
-/* Status */
-.status-default { background: #f3f4f6; color: #374151; border-color: #e5e7eb; }
-.status-scheduled { background: #ecfeff; color: #0e7490; border-color: #a5f3fc; }
-.status-landed { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
-.status-departed { background: #eff6ff; color: #1e40af; border-color: #bfdbfe; }
-.status-delayed { background: #fef3c7; color: #92400e; border-color: #fde68a; }
-.status-canceled { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+.timeMain {
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.timeDate {
+  font-size: 0.68rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+/* ─── BOTTOM BAR ─────────────────────────────────────────── */
+
+.bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.signal {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #38bdf8;
+  flex-shrink: 0;
+  animation: signalPulse 2s ease-in-out infinite;
+}
+
+.signalEmergency {
+  background: #ef4444;
+  animation: signalPulseRed 1.2s ease-in-out infinite;
+}
+
+.bottomText {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #334155;
+  font-family: 'Courier New', monospace;
+  flex: 1;
+}
+
+.index {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #1e293b;
+  font-family: 'Courier New', monospace;
+}
+
+/* ─── EMPTY STATE ────────────────────────────────────────── */
+
+.empty {
+  padding: 72px 32px;
+  text-align: center;
+  border-radius: 6px;
+  background: rgba(8, 15, 30, 0.6);
+  border: 1px dashed rgba(56, 189, 248, 0.1);
+}
+
+.emptyIcon {
+  font-size: 2rem;
+  color: #1e3a5f;
+  display: block;
+  margin-bottom: 16px;
+  transform: rotate(-15deg);
+  line-height: 1;
+}
+
+.emptyTitle {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #334155;
+  letter-spacing: 0.04em;
+}
+
+.emptyHint {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #1e293b;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.08em;
+}
+
+/* ─── KEYFRAMES ──────────────────────────────────────────── */
+
+@keyframes signalPulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.85); }
+  50%       { opacity: 1;   transform: scale(1.2);  }
+}
+
+@keyframes signalPulseRed {
+  0%, 100% { opacity: 0.6; transform: scale(0.85); box-shadow: none; }
+  50%       { opacity: 1;   transform: scale(1.25); box-shadow: 0 0 8px rgba(239, 68, 68, 0.7); }
+}
+
+@keyframes emergencyBorder {
+  0%, 100% { box-shadow: none; }
+  50%       { box-shadow: 0 0 20px rgba(239, 68, 68, 0.12), inset 0 0 20px rgba(239, 68, 68, 0.03); }
+}
+
+@keyframes emergencyLineFlash {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+@keyframes emergencyBadge {
+  0%, 100% { border-color: rgba(239, 68, 68, 0.3); }
+  50%       { border-color: rgba(239, 68, 68, 0.6); }
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .count {
+    align-items: flex-start;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

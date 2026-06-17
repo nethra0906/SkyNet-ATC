@@ -5,59 +5,113 @@ interface Props {
   summaryData: FlightSummary[];
 }
 
+// Parse "Xm Ys" or raw seconds into minutes for a simple bar width
+function turnaroundMinutes(raw: string | undefined): number {
+  if (!raw) return 0;
+  const mMatch = raw.match(/(\d+)\s*m/);
+  const sMatch = raw.match(/(\d+)\s*s/);
+  const m = mMatch ? parseInt(mMatch[1]) : 0;
+  const s = sMatch ? parseInt(sMatch[1]) : 0;
+  return m + s / 60;
+}
+
+const MAX_TURNAROUND_MIN = 60; // bar scales to this ceiling
+
 function Summary({ summaryData }: Props) {
+  const lastSync = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
   return (
     <section className={styles.summary}>
-      <h2 className={styles.heading}>Flight Turnaround Summary</h2>
+      {/* Header */}
+      <div className={styles.header}>
+        <div>
+          <span className={styles.eyebrow}>POST-SIMULATION</span>
+          <h2 className={styles.heading}>Turnaround Manifest</h2>
+        </div>
+        {summaryData.length > 0 && (
+          <div className={styles.headerMeta}>
+            <span className={styles.metaItem}>
+              <span className={styles.metaNum}>{summaryData.length}</span>
+              <span className={styles.metaLabel}>flights processed</span>
+            </span>
+            <div className={styles.metaDivider} aria-hidden="true" />
+            <span className={styles.metaItem}>
+              <span className={styles.metaNum}>{lastSync}</span>
+              <span className={styles.metaLabel}>last sync</span>
+            </span>
+          </div>
+        )}
+      </div>
 
       {summaryData.length === 0 ? (
-        <p className={styles.noData}>No summary data available. Start a simulation to see results.</p>
+        <div className={styles.empty}>
+          <span className={styles.emptyDot} aria-hidden="true" />
+          <span>Awaiting simulation data...</span>
+        </div>
       ) : (
-        <>
-          <div className={styles.tableContainer}>
-            <table className={styles.table}>
-              <thead>
-                <tr className={styles.headerRow}>
-                  <th className={styles.th}>Flight No.</th>
-                  <th className={styles.th}>Date</th>
-                  <th className={styles.th}>Airline</th>
-                  <th className={styles.th}>Touchdown</th>
-                  <th className={styles.th}>Taxiway In</th>
-                  <th className={styles.th}>Gate Dock</th>
-                  <th className={styles.th}>Gate Allotted</th>
-                  <th className={styles.th}>Gate Undock</th>
-                  <th className={styles.th}>Taxiway Out</th>
-                  <th className={styles.th}>Cleared for Takeoff</th>
-                  <th className={styles.th}>Takeoff</th>
-                  <th className={styles.th}>Total Turnaround</th>
-                </tr>
-              </thead>
-              <tbody>
-                {summaryData.map((flight, index) => (
-                  <tr key={index} className={index % 2 === 0 ? styles.evenRow : styles.oddRow}>
-                    <td className={styles.td}>{flight.flightId}</td>
-                    <td className={styles.td}>{flight.date}</td>
-                    <td className={styles.td}>{flight.airline}</td>
-                    <td className={styles.td}>{flight.touchdownTime || "-"}</td>
-                    <td className={styles.td}>{flight.taxiwayInTime || "-"}</td>
-                    <td className={styles.td}>{flight.gateDockTime || "-"}</td>
-                    <td className={styles.td}>{flight.gateAllotted || "-"}</td>
-                    <td className={styles.td}>{flight.gateUndockTime || "-"}</td>
-                    <td className={styles.td}>{flight.taxiwayOutTime || "-"}</td>
-                    <td className={styles.td}>{flight.clearanceTime || "-"}</td>
-                    <td className={styles.td}>{flight.takeoffTime || "-"}</td>
-                    <td className={styles.tdHighlight}>{flight.totalTurnaroundTime || "-"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        <div className={styles.tableContainer}>
+          <table className={styles.table} aria-label="Flight turnaround summary">
+            <thead>
+              <tr>
+                <th className={styles.th} scope="col">Flight</th>
+                <th className={styles.th} scope="col">Airline</th>
+                <th className={styles.th} scope="col">Touchdown</th>
+                <th className={styles.th} scope="col">Gate In</th>
+                <th className={styles.th} scope="col">Gate Out</th>
+                <th className={styles.th} scope="col">Takeoff</th>
+                <th className={`${styles.th} ${styles.thHighlight}`} scope="col">Turnaround</th>
+              </tr>
+            </thead>
+            <tbody>
+              {summaryData.map((flight, index) => {
+                const mins = turnaroundMinutes(flight.totalTurnaroundTime);
+                const barPct = Math.min((mins / MAX_TURNAROUND_MIN) * 100, 100);
+                const isFast = mins > 0 && mins < 20;
+                const isSlow = mins >= 40;
 
-          <div className={styles.stats}>
-            <p className={styles.statsText}><strong>Total Flights Processed</strong>: {summaryData.length}</p>
-            <p className={styles.statsText}><strong>Last Updated</strong>: {new Date().toLocaleString()}</p>
-          </div>
-        </>
+                return (
+                  <tr key={index} className={styles.row}>
+                    <td className={`${styles.td} ${styles.tdFlight}`}>
+                      {flight.flightId}
+                    </td>
+                    <td className={styles.td}>{flight.airline}</td>
+                    <td className={styles.td}>{flight.touchdownTime  || "—"}</td>
+                    <td className={styles.td}>{flight.gateDockTime   || "—"}</td>
+                    <td className={styles.td}>{flight.gateUndockTime || "—"}</td>
+                    <td className={styles.td}>{flight.takeoffTime    || "—"}</td>
+                    <td className={`${styles.td} ${styles.tdTurnaround}`}>
+                      <span
+                        className={`${styles.turnaroundVal} ${
+                          isFast ? styles.turnaroundFast :
+                          isSlow ? styles.turnaroundSlow :
+                          styles.turnaroundMid
+                        }`}
+                      >
+                        {flight.totalTurnaroundTime || "—"}
+                      </span>
+                      {mins > 0 && (
+                        <div className={styles.bar} aria-hidden="true">
+                          <div
+                            className={`${styles.barFill} ${
+                              isFast ? styles.barFast :
+                              isSlow ? styles.barSlow :
+                              styles.barMid
+                            }`}
+                            style={{ width: `${barPct}%` }}
+                          />
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
     </section>
   );
